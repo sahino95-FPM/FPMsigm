@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: credef
+      MYSQL_USER: credef
+      MYSQL_PASSWORD: credef
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    command: ["--default-authentication-plugin=mysql_native_password","--sql_mode="]
+  adminer:
+    image: adminer
+    ports:
+      - "8080:8080"
