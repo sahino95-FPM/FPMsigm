@@ -282,6 +282,122 @@ GET /api/credef/dossiers/1/workflow
 **Codes d'erreur:**
 - `404`: Dossier non trouvé
 
+#### 5. Upload d'une pièce jointe
+
+```http
+POST /api/credef/dossiers/1/pieces
+Content-Type: multipart/form-data
+
+Form Data:
+  file: [fichier binaire]
+  type_piece: "CNI"
+  uploaded_by: 123
+  commentaire: "Carte d'identité recto-verso"
+```
+
+**Types de pièces acceptés:**
+- `CNI` - Carte Nationale d'Identité (obligatoire) - PDF, JPG, PNG
+- `BULLETIN_PAIE` - Bulletin de paie (obligatoire) - PDF
+- `ATTESTATION_TRAVAIL` - Attestation de travail (obligatoire) - PDF
+- `RIB` - Relevé d'Identité Bancaire (obligatoire) - PDF, JPG, PNG
+- `JUSTIFICATIF_DOMICILE` - Justificatif de domicile (optionnel) - PDF
+- `PHOTO` - Photo d'identité (optionnel) - JPG, PNG
+- `AUTRE` - Autre document (optionnel) - PDF, JPG, PNG, DOC, DOCX
+
+**Validation:**
+- Taille max: 5 MB
+- Extensions vérifiées selon le type de pièce
+- Fichier non vide
+
+**Réponse (201):**
+```json
+{
+  "id": 1,
+  "dossier_id": 1,
+  "type_piece": "CNI",
+  "nom_fichier": "carte_identite.pdf",
+  "taille_octets": 524288,
+  "mime_type": "application/pdf",
+  "est_obligatoire": true,
+  "est_valide": true,
+  "uploaded_by": 123,
+  "commentaire": "Carte d'identité recto-verso",
+  "created_at": "2025-11-03T23:55:00"
+}
+```
+
+**Codes d'erreur:**
+- `400`: Fichier manquant, type invalide, extension non autorisée, fichier trop volumineux
+- `404`: Dossier non trouvé
+- `500`: Erreur serveur lors de l'upload
+
+#### 6. Liste des pièces jointes d'un dossier
+
+```http
+GET /api/credef/dossiers/1/pieces
+```
+
+**Réponse (200):**
+```json
+{
+  "dossier_id": 1,
+  "dossier_ref": "CREDEF-2025-001",
+  "pieces": [
+    {
+      "id": 1,
+      "type_piece": "CNI",
+      "nom_fichier": "carte_identite.pdf",
+      "taille_octets": 524288,
+      "est_obligatoire": true,
+      "est_valide": true,
+      "created_at": "2025-11-03T23:55:00"
+    },
+    {
+      "id": 2,
+      "type_piece": "BULLETIN_PAIE",
+      "nom_fichier": "bulletin_mai_2025.pdf",
+      "taille_octets": 312456,
+      "est_obligatoire": true,
+      "est_valide": true,
+      "created_at": "2025-11-03T23:56:00"
+    }
+  ]
+}
+```
+
+#### 7. Validation de la complétude des pièces
+
+```http
+GET /api/credef/dossiers/1/pieces/validation
+```
+
+**Réponse (200):**
+```json
+{
+  "dossier_id": 1,
+  "dossier_ref": "CREDEF-2025-001",
+  "complet": false,
+  "pieces_manquantes": ["ATTESTATION_TRAVAIL", "RIB"],
+  "types_obligatoires": ["CNI", "BULLETIN_PAIE", "ATTESTATION_TRAVAIL", "RIB"]
+}
+```
+
+#### 8. Suppression d'une pièce jointe
+
+```http
+DELETE /api/credef/pieces/1
+```
+
+**Réponse (200):**
+```json
+{
+  "message": "Pièce supprimée avec succès"
+}
+```
+
+**Codes d'erreur:**
+- `404`: Pièce non trouvée
+
 ---
 
 ## 🔄 Workflow CREDEF
@@ -385,9 +501,9 @@ class NouveauModele(db.Model):
 - [x] Transitions Workflow
 - [x] Migration Alembic initiale
 - [x] Workflow Log (historique des transitions)
+- [x] Pièces jointes (upload & validation)
 
 ### 🔜 En cours
-- [ ] Pièces jointes (upload & validation)
 - [ ] Authentification JWT complète (login/register)
 
 ### ⏳ À venir
