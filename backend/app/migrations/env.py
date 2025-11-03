@@ -22,6 +22,7 @@ from app.extensions import db
 from app.domain.models.credef_dossier import CredefDossier  # noqa
 from app.domain.models.workflow_log import WorkflowLog  # noqa
 from app.domain.models.piece_jointe import PieceJointe  # noqa
+from app.domain.models.user import User  # noqa
 target_metadata = db.metadata
 
 

@@ -398,6 +398,128 @@ DELETE /api/credef/pieces/1
 **Codes d'erreur:**
 - `404`: Pièce non trouvée
 
+### Authentification
+
+#### 9. Enregistrement d'un nouvel utilisateur
+
+```http
+POST /api/auth/register
+Content-Type: application/json
+
+{
+  "email": "admin@credef.com",
+  "password": "admin123",
+  "nom": "Administrateur",
+  "prenom": "Système",
+  "role": "ADMIN"
+}
+```
+
+**Rôles disponibles:**
+- `ADMIN` - Administrateur système
+- `SACV` - Service d'Accueil et de Contrôle de Versement
+- `DCFF` - Directeur Crédit Fonds et Financement
+- `DCPRE` - Directeur Crédit Prêts et Épargne
+- `DTR` - Direction du Trésor
+- `ADHERENT` - Adhérent/Client
+
+**Validation:**
+- Email unique (pas de doublon)
+- Mot de passe minimum 6 caractères
+- Rôle valide parmi la liste ci-dessus
+
+**Réponse (201):**
+```json
+{
+  "message": "Utilisateur créé avec succès",
+  "user": {
+    "id": 1,
+    "email": "admin@credef.com",
+    "nom": "Administrateur",
+    "prenom": "Système",
+    "role": "ADMIN",
+    "is_active": true,
+    "created_at": "2025-11-04T00:10:00",
+    "updated_at": "2025-11-04T00:10:00"
+  }
+}
+```
+
+**Codes d'erreur:**
+- `400`: Champ manquant, email déjà utilisé, mot de passe trop court, rôle invalide
+
+#### 10. Connexion utilisateur
+
+```http
+POST /api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@credef.com",
+  "password": "admin123"
+}
+```
+
+**Réponse (200):**
+```json
+{
+  "access_token": "eyJ0eXAiOiJKV1QiLCJhbGc...",
+  "refresh_token": "eyJ0eXAiOiJKV1QiLCJhbGc...",
+  "user": {
+    "id": 1,
+    "email": "admin@credef.com",
+    "nom": "Administrateur",
+    "prenom": "Système",
+    "role": "ADMIN",
+    "is_active": true
+  }
+}
+```
+
+**Note:** Utilisez le `access_token` dans l'en-tête `Authorization: Bearer <token>` pour les requêtes protégées.
+
+**Codes d'erreur:**
+- `400`: Email ou mot de passe manquant
+- `401`: Identifiants incorrects ou compte désactivé
+
+#### 11. Récupérer le profil utilisateur
+
+```http
+GET /api/auth/me
+Authorization: Bearer <access_token>
+```
+
+**Réponse (200):**
+```json
+{
+  "id": 1,
+  "email": "admin@credef.com",
+  "nom": "Administrateur",
+  "prenom": "Système",
+  "role": "ADMIN",
+  "is_active": true,
+  "created_at": "2025-11-04T00:10:00",
+  "updated_at": "2025-11-04T00:10:00"
+}
+```
+
+**Codes d'erreur:**
+- `401`: Token manquant ou invalide
+- `404`: Utilisateur introuvable
+
+#### 12. Liste des rôles disponibles
+
+```http
+GET /api/auth/roles
+```
+
+**Réponse (200):**
+```json
+{
+  "roles": ["ADMIN", "SACV", "DCFF", "DCPRE", "DTR", "ADHERENT"]
+}
+```
+
 ---
 
 ## 🔄 Workflow CREDEF
@@ -496,15 +618,16 @@ class NouveauModele(db.Model):
 
 ## 📝 Backlog (Prochaines étapes)
 
-### ✅ Complété
+### ✅ Complété - EPIC 1 Backend (100%)
 - [x] API Dossiers (GET/POST)
 - [x] Transitions Workflow
 - [x] Migration Alembic initiale
 - [x] Workflow Log (historique des transitions)
 - [x] Pièces jointes (upload & validation)
+- [x] Authentification JWT complète (login/register)
 
-### 🔜 En cours
-- [ ] Authentification JWT complète (login/register)
+### 🔜 En cours - EPIC 2 Frontend
+- [ ] Initialiser projet React/Tailwind
 
 ### ⏳ À venir
 - [ ] Frontend React/Tailwind
