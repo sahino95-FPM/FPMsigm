@@ -20,6 +20,7 @@ def get_app_config():
 from app.extensions import db
 # Import all models so they are registered with SQLAlchemy
 from app.domain.models.credef_dossier import CredefDossier  # noqa
+from app.domain.models.workflow_log import WorkflowLog  # noqa
 target_metadata = db.metadata
 
 

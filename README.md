@@ -220,7 +220,9 @@ Content-Type: application/json
 
 {
   "to": "DÉPOSÉ",
-  "role": "SACV"
+  "role": "SACV",
+  "acteur_id": 123,
+  "note": "Dossier validé par le SACV"
 }
 ```
 
@@ -234,8 +236,50 @@ Content-Type: application/json
 }
 ```
 
+**Note:** La transition est automatiquement enregistrée dans le `workflow_log` pour traçabilité.
+
 **Codes d'erreur:**
 - `400`: Transition invalide
+- `404`: Dossier non trouvé
+
+#### 4. Historique des transitions (Workflow Log)
+
+```http
+GET /api/credef/dossiers/1/workflow
+```
+
+**Réponse (200):**
+```json
+{
+  "dossier_id": 1,
+  "dossier_ref": "CREDEF-2025-001",
+  "statut_actuel": "DÉPOSÉ",
+  "historique": [
+    {
+      "id": 2,
+      "dossier_id": 1,
+      "statut_from": "BROUILLON",
+      "statut_to": "DÉPOSÉ",
+      "acteur_id": 123,
+      "role": "SACV",
+      "commentaire": "Dossier validé par le SACV",
+      "created_at": "2025-11-03T23:45:12.000000"
+    },
+    {
+      "id": 1,
+      "dossier_id": 1,
+      "statut_from": null,
+      "statut_to": "BROUILLON",
+      "acteur_id": null,
+      "role": "SYSTEM",
+      "commentaire": null,
+      "created_at": "2025-11-03T23:30:00.000000"
+    }
+  ]
+}
+```
+
+**Codes d'erreur:**
 - `404`: Dossier non trouvé
 
 ---
@@ -340,9 +384,9 @@ class NouveauModele(db.Model):
 - [x] API Dossiers (GET/POST)
 - [x] Transitions Workflow
 - [x] Migration Alembic initiale
+- [x] Workflow Log (historique des transitions)
 
 ### 🔜 En cours
-- [ ] Workflow Log (historique des transitions)
 - [ ] Pièces jointes (upload & validation)
 - [ ] Authentification JWT complète (login/register)
 
