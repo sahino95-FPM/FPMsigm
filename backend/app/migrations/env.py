@@ -16,7 +16,11 @@ def get_app_config():
     return app.config["SQLALCHEMY_DATABASE_URI"]
 
 
-# target_metadata = db.metadata  # if using models metadata
+# Import models for autogeneration
+from app.extensions import db
+# Import all models so they are registered with SQLAlchemy
+from app.domain.models.credef_dossier import CredefDossier  # noqa
+target_metadata = db.metadata
 
 
 def run_migrations_offline():
