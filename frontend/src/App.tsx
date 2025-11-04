@@ -4,6 +4,7 @@ import { useAuthStore } from './stores/authStore';
 import { Login } from './pages/Login';
 import { Dashboard } from './pages/Dashboard';
 import { Dossiers } from './pages/Dossiers';
+import { DossierDetail } from './pages/DossierDetail';
 import { Layout } from './components/Layout';
 
 // Protected Route Component
@@ -61,6 +62,7 @@ function App() {
           <Route index element={<Navigate to="/dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="dossiers" element={<Dossiers />} />
+          <Route path="dossiers/:id" element={<DossierDetail />} />
           <Route path="pieces" element={<div className="text-center py-12">Page Pièces Jointes (à venir)</div>} />
         </Route>
 

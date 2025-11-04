@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { api } from '../services/api';
 import { Search, Plus, Filter } from 'lucide-react';
 import type { CredefDossier } from '../types';
@@ -167,9 +168,12 @@ export const Dossiers: React.FC = () => {
                       {dossier.mois_traitement || '-'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <button className="text-primary-600 hover:text-primary-900">
+                      <Link
+                        to={`/dossiers/${dossier.id}`}
+                        className="text-primary-600 hover:text-primary-900"
+                      >
                         Détails
-                      </button>
+                      </Link>
                     </td>
                   </tr>
                 ))}
