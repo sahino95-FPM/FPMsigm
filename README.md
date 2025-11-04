@@ -129,7 +129,7 @@ FLASK_ENV=development
 
 ## 🎯 Lancement
 
-### Démarrer l'application
+### Backend (API Flask)
 
 ```bash
 cd backend
@@ -137,6 +137,16 @@ python3 autoapp.py
 ```
 
 L'API sera disponible sur: **http://localhost:5000**
+
+### Frontend (React)
+
+```bash
+cd frontend
+npm install    # Première fois seulement
+npm run dev
+```
+
+L'interface sera disponible sur: **http://localhost:3000**
 
 ### Accéder à Adminer (interface DB)
 
