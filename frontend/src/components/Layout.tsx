@@ -1,6 +1,7 @@
 import React from 'react';
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../stores/authStore';
+import { Logo } from './Logo';
 import {
   LayoutDashboard,
   FolderOpen,
@@ -44,7 +45,8 @@ export const Layout: React.FC = () => {
               >
                 {sidebarOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </button>
-              <Link to="/dashboard" className="flex items-center">
+              <Link to="/dashboard" className="flex items-center gap-3">
+                <Logo size="small" />
                 <h1 className="text-2xl font-bold text-primary-600">FPMsigm</h1>
               </Link>
             </div>

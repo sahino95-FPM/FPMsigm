@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../stores/authStore';
+import { Logo } from '../components/Logo';
 import { Lock, Mail, AlertCircle } from 'lucide-react';
 
 export const Login: React.FC = () => {
@@ -26,6 +27,9 @@ export const Login: React.FC = () => {
       <div className="max-w-md w-full">
         {/* Logo et titre */}
         <div className="text-center mb-8">
+          <div className="flex justify-center mb-4">
+            <Logo size="large" className="text-white" />
+          </div>
           <h1 className="text-4xl font-bold text-white mb-2">FPMsigm</h1>
           <p className="text-primary-100">Gestion des dossiers CREDEF</p>
         </div>
