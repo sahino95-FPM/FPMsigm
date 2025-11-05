@@ -23,15 +23,15 @@ export const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-600 to-primary-800 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-white px-4">
       <div className="max-w-md w-full">
         {/* Logo et titre */}
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
-            <Logo size="large" className="text-white" />
+            <Logo size="large" />
           </div>
-          <h1 className="text-4xl font-bold text-white mb-2">FPMsigm</h1>
-          <p className="text-primary-100">Gestion des dossiers CREDEF</p>
+          <h1 className="text-4xl font-bold text-primary-600 mb-2">FPMsigm</h1>
+          <p className="text-gray-600">Gestion des dossiers CREDEF</p>
         </div>
 
         {/* Formulaire de connexion */}
