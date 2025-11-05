@@ -38,11 +38,17 @@ def test_register():
         if response.status_code == 201:
             print("\n✓ Utilisateur créé avec succès!")
             return True
-        elif response.status_code == 400 and "existe déjà" in response.text:
-            print("\n⚠ L'utilisateur existe déjà. Passons au test de connexion...")
-            return True
+        elif response.status_code == 400:
+            response_data = response.json()
+            if "existe déjà" in response_data.get("error", ""):
+                print("\n⚠ L'utilisateur existe déjà. Passons au test de connexion...")
+                return True
+            else:
+                print(f"\n✗ Erreur lors de l'enregistrement: {response_data.get('error')}")
+                return False
         else:
-            print("\n✗ Erreur lors de l'enregistrement")
+            print(f"\n✗ Erreur lors de l'enregistrement (Status: {response.status_code})")
+            print(f"Response: {json.dumps(response.json(), indent=2, ensure_ascii=False)}")
             return False
 
     except requests.exceptions.ConnectionError:
