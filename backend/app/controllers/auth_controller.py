@@ -76,13 +76,12 @@ def login():
 def get_current_user():
     """Récupère les informations de l'utilisateur connecté"""
     try:
-        # Récupérer l'identité depuis le token JWT
-        identity = get_jwt_identity()
-        user_id = identity.get("user_id")
+        # Récupérer l'identité depuis le token JWT (user_id en string)
+        user_id = get_jwt_identity()
 
         # Récupérer l'utilisateur
         svc = AuthService(db.session)
-        user = svc.get_user_by_id(user_id)
+        user = svc.get_user_by_id(int(user_id))
 
         if not user:
             return jsonify({"error": "Utilisateur introuvable"}), 404

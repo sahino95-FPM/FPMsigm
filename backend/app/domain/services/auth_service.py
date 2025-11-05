@@ -80,14 +80,15 @@ class AuthService:
             raise ValueError("Ce compte est désactivé")
 
         # Créer les tokens JWT
-        identity = {
-            "user_id": user.id,
-            "email": user.email,
-            "role": user.role
-        }
-
-        access_token = create_access_token(identity=identity)
-        refresh_token = create_refresh_token(identity=identity)
+        # Identity doit être une string (user_id), les claims additionnels contiennent email et role
+        access_token = create_access_token(
+            identity=str(user.id),
+            additional_claims={"email": user.email, "role": user.role}
+        )
+        refresh_token = create_refresh_token(
+            identity=str(user.id),
+            additional_claims={"email": user.email, "role": user.role}
+        )
 
         return {
             "access_token": access_token,
