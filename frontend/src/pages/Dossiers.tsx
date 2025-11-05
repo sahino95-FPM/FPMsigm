@@ -3,12 +3,14 @@ import { Link } from 'react-router-dom';
 import { api } from '../services/api';
 import { Search, Plus, Filter } from 'lucide-react';
 import type { CredefDossier } from '../types';
+import { CreateDossierModal } from '../components/CreateDossierModal';
 
 export const Dossiers: React.FC = () => {
   const [dossiers, setDossiers] = useState<CredefDossier[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     loadDossiers();
@@ -24,6 +26,10 @@ export const Dossiers: React.FC = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleDossierCreated = (newDossier: CredefDossier) => {
+    setDossiers([newDossier, ...dossiers]);
   };
 
   const filteredDossiers = dossiers.filter((dossier) =>
@@ -53,7 +59,10 @@ export const Dossiers: React.FC = () => {
           <h1 className="text-3xl font-bold text-gray-900">Dossiers CREDEF</h1>
           <p className="mt-2 text-gray-600">Gestion des dossiers de crédit</p>
         </div>
-        <button className="btn-primary flex items-center gap-2">
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="btn-primary flex items-center gap-2"
+        >
           <Plus className="h-5 w-5" />
           Nouveau Dossier
         </button>
@@ -188,6 +197,13 @@ export const Dossiers: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Modal de création */}
+      <CreateDossierModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSuccess={handleDossierCreated}
+      />
     </div>
   );
 };
